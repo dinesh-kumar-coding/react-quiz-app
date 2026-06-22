@@ -2,7 +2,6 @@ import "./App.css";
 import { useState } from "react";
 
 function App() {
-  
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [isAnswered, setIsAnswered] = useState(false);
   const [score, setScore] = useState(0);
@@ -48,64 +47,69 @@ function App() {
     setSelectedOption(null);
   }
 
-  function handleRestart(){
+  function handleRestart() {
     setScore(0);
     setIsAnswered(false);
     setCurrentQuestion(0);
     setSelectedOption(null);
   }
 
-  function getButtonStyle(option){
-    if(!isAnswered){
+  function getButtonStyle(option) {
+    if (!isAnswered) {
       return "";
     }
-    if(option === current.answer){
+    if (option === current.answer) {
       return "correct";
     }
-    if(option === selectedOption){
-      return "wrong"
+    if (option === selectedOption) {
+      return "wrong";
     }
     return "";
   }
 
-  if(isFinished){
-    return(
-      <>
+  if (isFinished) {
+    return (
+      <div className="quiz-card">
         <h2>Quiz Completed!</h2>
-        <p>You scored {score} out of {questions.length}</p>
-        <button onClick={handleRestart}>Restart</button>
-      </>
-    )
+        <p className = "score">
+          You scored {score} out of {questions.length}
+        </p>
+        <button onClick={handleRestart} className="btn-primary">Restart</button>
+      </div>
+    );
   }
 
   return (
-    <>
+    <div className="quiz-card">
       <h2>Question: {current?.question}</h2>
-      {current?.options.map((option, index) => {
-        return (
-          <button
-            className={getButtonStyle(option)}
-            disabled={isAnswered}
-            key={index}
-            onClick={() =>{
-              checkAnswer(option);
-            }}
-          >
-            {option}
-          </button>
-        );
-      })}
+
+      <div className="options">
+        {current?.options.map((option, index) => {
+          return (
+            <button
+              className={getButtonStyle(option)}
+              disabled={isAnswered}
+              key={index}
+              onClick={() => {
+                checkAnswer(option);
+              }}
+            >
+              {option}
+            </button>
+          );
+        })}
+      </div>
 
       {isAnswered && currentQuestion < questions.length && (
-        <button
+        <button className="btn-primary"
           onClick={() => {
             handleNext();
           }}
         >
-          {currentQuestion === questions.length - 1? "Finish": "Next"}
+          {currentQuestion === questions.length - 1 ? "Finish" : "Next"}
         </button>
       )}
-    </>
+    </div>
   );
 }
 
